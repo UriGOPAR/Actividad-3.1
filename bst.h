@@ -1,8 +1,8 @@
 // =================================================================
 //
 // File: bst.h
-// Author:
-// Date:
+// Author: Uri Jared Gopar Morales-A01709413
+// Date:23-10-2022
 //
 // =================================================================
 #ifndef BST_H
@@ -267,8 +267,16 @@ void Node<T>::preOrder(std::stringstream &aux) const {
 // =================================================================
 template <class T>
 uint Node<T>::leaves() const {
-	//TO DO
-	return 0;
+	uint c=0;
+	if(left==nullptr && right==nullptr)
+		return 1;
+	if(right != nullptr){
+		c+=right->leaves();
+	}
+	if (left != nullptr){
+		c+=left->leaves();
+	}
+	return c;
 }
 
 // =================================================================
@@ -281,7 +289,16 @@ uint Node<T>::leaves() const {
 template <class T>
 uint Node<T>::depth() const {
 	//TO DO
-	return 0;
+	uint depth=1;
+	if(left != nullptr)
+		depth += left->depth();
+	if(right != nullptr)
+		depth += right->depth();
+	if(leaves()==0){
+		return depth;
+	}
+
+	return depth;
 }
 
 // =================================================================
@@ -294,6 +311,15 @@ uint Node<T>::depth() const {
 template <class T>
 bool Node<T>::isFull() const {
 	//TO DO
+	if(left != nullptr && right != nullptr){
+		if(left->depth()== right->depth()){
+			return left->isFull() && right->isFull();
+		}
+	}
+	if(left == nullptr && right == nullptr){
+		return true;
+	}
+	
 	return false;
 }
 
@@ -306,9 +332,26 @@ bool Node<T>::isFull() const {
 // =================================================================
 template <class T>
 T Node<T>::ancestor(T val) const {
-	//TO DO
-	return T();
+	if (val > value) {
+		if (right != nullptr) {
+			if (right->value == val) {
+				return value;
+			} else {
+				return right->ancestor(val);
+			}
+		}
+	} else if (val < value) {
+		if (left != nullptr) {
+			if (left->value == val) {
+				return value;
+			} else {
+				return left->ancestor(val);
+			}
+		}
+	}
+	throw NoSuchElement();
 }
+
 
 // =================================================================
 // Definition of the Binary Search Tree class
